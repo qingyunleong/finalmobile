@@ -108,16 +108,18 @@ class _cartPage extends State<cartPage> {
                                             child: Column(children: [
                                               Column(children: [
                                                 const SizedBox(height: 10),
-                                                Text("Price: RM " +
-                                                    cartList[index]
-                                                        .subject_price
-                                                        .toString() +
-                                                    " / " +
-                                                    cartList[index]
-                                                        .subject_sessions
-                                                        .toString() +
-                                                    " sessions",
-                                                    textAlign: TextAlign.center,),
+                                                Text(
+                                                  "Price: RM " +
+                                                      cartList[index]
+                                                          .subject_price
+                                                          .toString() +
+                                                      " / " +
+                                                      cartList[index]
+                                                          .subject_sessions
+                                                          .toString() +
+                                                      " sessions",
+                                                  textAlign: TextAlign.center,
+                                                ),
                                                 const SizedBox(height: 10),
                                                 Text(
                                                   "RM " +
@@ -131,41 +133,17 @@ class _cartPage extends State<cartPage> {
                                                       fontWeight:
                                                           FontWeight.bold),
                                                 ),
-                                                Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.start,
-                                                  children: [
-                                                    SizedBox(
-                                                      width: 55,
-                                                      child: TextButton(
-                                                          onPressed: () {
-                                                            _updateCart(
-                                                                index, "-");
-                                                          },
-                                                          child:
-                                                              const Text("-")),
-                                                    ),
-                                                    Text(cartList[index]
-                                                        .cart_qty
-                                                        .toString()),
-                                                    SizedBox(
-                                                      width: 55,
-                                                      child: TextButton(
-                                                          onPressed: () {
-                                                            _updateCart(
-                                                                index, "+");
-                                                          },
-                                                          child:
-                                                              const Text("+")),
-                                                    ),
-                                                    IconButton(
-                                                        onPressed: () {
-                                                          _deleteItem(index);
-                                                        },
-                                                        icon: const Icon(
-                                                            Icons.delete))
-                                                  ],
-                                                )
+                                                Align(
+                                                  alignment:
+                                                      Alignment.bottomRight,
+                                                  child: IconButton(
+                                                      iconSize: 25,
+                                                      onPressed: () {
+                                                        _deleteItem(index);
+                                                      },
+                                                      icon: const Icon(
+                                                          Icons.delete)),
+                                                ),
                                               ]),
                                             ]),
                                           )
@@ -233,39 +211,6 @@ class _cartPage extends State<cartPage> {
         titlecenter = "Your Cart is Empty 😞 ";
         cartList.clear();
         setState(() {});
-      }
-    });
-  }
-
-  void _updateCart(int index, String s) {
-    if (s == "-") {
-      if (int.parse(cartList[index].cart_qty.toString()) == 1) {
-        _deleteItem(index);
-      }
-    }
-    http.post(Uri.parse(Config.server + "/mobile_mytutor/php/update_cart.php"),
-        body: {'cart_id': cartList[index].cart_id, 'operation': s}).timeout(
-      const Duration(seconds: 5),
-      onTimeout: () {
-        return http.Response('Error', 408);
-      },
-    ).then((response) {
-      var jsondata = jsonDecode(response.body);
-      if (response.statusCode == 200 && jsondata['status'] == 'success') {
-        Fluttertoast.showToast(
-            msg: "Success",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1,
-            fontSize: 16.0);
-        _loadCart();
-      } else {
-        Fluttertoast.showToast(
-            msg: "Failed",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1,
-            fontSize: 16.0);
       }
     });
   }
