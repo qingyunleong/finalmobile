@@ -95,6 +95,7 @@ class _cartPage extends State<cartPage> {
                                           ),
                                           const SizedBox(height: 10),
                                           Text(
+                                            maxLines: 3,
                                             cartList[index]
                                                 .subject_name
                                                 .toString(),
